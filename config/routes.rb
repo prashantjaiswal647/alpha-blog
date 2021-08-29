@@ -7,3 +7,4 @@ resources :articles
 
 
 end
+ 
