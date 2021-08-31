@@ -2,23 +2,4 @@
 <%= link_to "create new article", new_article_path %> | <%= link_to 'Home', root_path %><br/>
 <br/>
 
-<table>
-
-<tr>
-<th>Title</th>
-<th>description</th>
-</tr>
-
-<% @articles.each do |article| %>
-
-<tr>
-<td><%= article.title %></td>
-<td><%= article.description %></td>
-<td><%= link_to 'Edit', edit_article_path(article) %></td>
-<td><%= link_to 'Show', article_path(article) %></td>
-<td><%= link_to 'Delete', article_path(article), method: :delete, data: {confirm: "Are you sure? "} %></td>
-<td>by <%= article.user.username if article.user %> </td>
-</tr>
-
-<% end %>
-</table>
+<%= render 'article' %>
