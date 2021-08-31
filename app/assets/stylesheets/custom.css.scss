@@ -1,0 +1,36 @@
+$navbar-default-bg: #08088A;
+
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+
+#logo{
+    float:left;
+    font-size: 1.7em;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    font-weight: bold;
+
+}
+
+#logo:hover{
+     color: #fff;
+    text-decoration: none;
+}
+
+.jumbotron {
+    background-image: url(http://i1216.photobucket.com/albums/dd370/kjames1581/jtronnew.jpg);
+    height: 250px;
+    color: white;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 0 !important;
+    font-weight: bold;
+    text-align: center;
+    margin-top: -9px;
+    p { 
+    color: white;
+    }
+  }
