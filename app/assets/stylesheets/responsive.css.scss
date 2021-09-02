@@ -1,0 +1,59 @@
+#img-responsive-jumbotron {
+    background-image: asset-url('jumbotron-background.jpg'); // Automatically finds image in images folder.
+    background-repeat: no-repeat;
+  }
+  
+  /* Small Devices */
+  // @media only screen and (max-width: 767px) {
+  //   #img-responsive-jumbotron {
+  //     background-image: none;
+  //     background-color: #1875c2 !important;
+  //     p, a {
+  //       transform: translate(0px -30px) !important;
+  //     }
+  //   }
+  // }
+  
+  /* Small Devices & Tablets */
+  @media only screen and (max-width: 768px) {
+    #img-responsive-jumbotron {
+      background-image: none;
+      background-color: #1875c2 !important;
+      p {
+        margin: 0;
+      }
+      a {
+        margin: 15px;
+      }
+    }
+  
+    .div-responsive {
+      margin: 0 !important;
+    }
+  
+    .label-responsive {
+      display: none;
+    }
+  
+    .form-responsive {
+      width: 100% + (100% * (2 / 12)) // Manual calculation override col-2 and col-10 to make the col-10 a col-12 lol
+    }
+  }
+  
+  /* Medium Devices (Desktop) */
+  @media only screen and (min-width: 992px) {
+    #img-responsive-jumbotron {
+      background-position: 50% 80%;
+      background-size: 150%;
+      height: 650px;
+    }
+  }
+  
+  /* Large Devices, Wide Screen (TV) */
+  @media only screen and (min-width: 1025px) {
+    #img-responsive-jumbotron {
+      background-position: 50% 75%;
+      background-size: 120%;
+      height: 650px;
+    }
+  }

@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AlphaBlog</title>
+    <title>AlphaBlogHw1</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body class="d-flex flex-column">
     <%= render 'layouts/navigation' %>
-    <%= render 'layouts/messages' %>
-  <div class="container"
-    <%= yield %>
+    <div id="page-content">
+      <%= render 'layouts/messages' %> <!-- See _messages.html.erb under layouts folder. Starting with an underscore means it's a partial, so Rails will know this. This is only a few lines but is good practice for keeping the body of application.html.erb short. Also, partials are good for DRY principle. -->
+      <%= yield %>
     </div>
+    <%= render 'layouts/footer' %>
   </body>
 </html>

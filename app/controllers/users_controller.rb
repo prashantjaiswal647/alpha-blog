@@ -1,72 +1,86 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show edit update destroy ]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :require_user, only: [:edit, :update, :destroy]
+  before_action :require_same_user, only: [:edit, :update, :destroy]
+  before_action :require_logged_out, only: [:new, :create]
 
-  # GET /users or /users.json
-  def index
-    @users = User.all
+  def show
+    @articles = @user.articles.paginate(page: params[:page], per_page: 5)
   end
 
-  # GET /users/1 or /users/1.json
-  def show
-    @user = User.find(params[:id])
-    @articles = @user.articles  
-  end 
-
-  # GET /users/new
   def new
     @user = User.new
   end
 
-  # GET /users/1/edit
-  def edit
-    @user = User.find(params[:id])
+  def index
+    @users = User.paginate(page: params[:page], per_page: 5)
   end
 
-  # POST /users or /users.json
+  def edit
+  end
+
+  def update
+    if @user.update(user_params)
+      flash[:'alert-success'] = "Your account information was updated successfully"
+      redirect_to @user
+    else
+      render 'edit'
+    end
+  end
+
   def create
     @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: "#{@user.username} was successfully created." }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.save
+      session[:user_id] = @user.id
+      flash[:'alert-success'] = "Welcome to the Alpha Blog #{@user.username}, you have successfully signed up!"
+      redirect_to articles_path
+    else
+      render 'new'
     end
   end
 
-  # PATCH/PUT /users/1 or /users/1.json
-  def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: "User was successfully updated." }
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /users/1 or /users/1.json
+  # def destroy # Old destroy breaks the webpage. Took 4 hours to fix. Never remove this code so you can always remember not to make this mistake again. @user.destroy causes current_user to become nil so session is unable to become nil because of comparison between nil and old existing user, so everything breaks after that. Duplicating the variable with .dup to another variable doesn't work either because user_id doesn't get duplicated since it is created by Ruby for each User and can only increment. This is evil. Never uncomment this.
+  #   @user.destroy
+  #   session[:user_id] = nil if @user == current_user # IMPORTANT if a user is deleted and the session ID is not cleared, the session will be trying to load with an invalid user, which will cause the webpage to have errors and be unable to load without back-end tinkering.
+  #   flash[:'alert-success'] = "Account and all associated articles successfully deleted"
+  #   #redirect_to(logged_in? && current_user.admin? ? users_path : root_path)
+  #   redirect_to articles_path
+  # end
   def destroy
+    if @user == current_user
+      session[:user_id] = nil
+    end
     @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: "User was successfully destroyed." }
-      format.json { head :no_content }
+    flash[:'alert-success'] = "Account and all associated articles successfully deleted"
+    if !current_user.nil?
+      redirect_to users_path 
+    else
+      redirect_to root_path
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def user_params
-      params.require(:user).permit(:username, :email, :password)
+  def user_params
+    params.require(:user).permit(:username, :email, :password)
+  end
+
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  def require_same_user
+    if current_user != @user && !current_user.admin?
+      flash[:'alert-danger'] = "You can only edit or delete your own account"
+      redirect_to @user
     end
+  end
+
+  def require_logged_out
+    if logged_in?
+      flash[:'alert-danger'] = "You are already logged in as #{current_user.username}"
+      redirect_to user_path(current_user)
+    end
+  end
+
 end

@@ -1,6 +1,9 @@
-<div class="center jumbotron">
-  <h1>Alpha-Blog</h1>
-  
-  <%= link_to "Sign-Up", "signup" %>
+<div class="container" id="home-container">
+  <div class="jumbotron bg-light p-5 rounded-lg m-3 text-center text-white" id="img-responsive-jumbotron">
+    <h1 class="display-4">Alpha Blog</h1>
+    <p class="jumbo-p lead">Create articles for others to see. This is a website project for learning Ruby on Rails.</p>
+    <hr class="jumbo-p my-4">
+    <p>This was developed in 7 days.</p>
+    <%= link_to "Sign up!", signup_path, class: "btn btn-success btn-lg shadow-none", id: "jumbo-button" %>
+  </div>
 </div>
-
